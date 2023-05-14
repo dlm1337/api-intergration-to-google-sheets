@@ -1,4 +1,6 @@
 const { google } = require('googleapis');
+//credentials would come from a google cloud project service account created.
+//(add a key to your service account and it gives you the <credentials>.json)
 const credentials = require('./google-credentials.json');
 
 // Set up the Google Sheets API client with your Service Account credentials
