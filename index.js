@@ -23,8 +23,8 @@ const server = http.createServer(async (req, res) => {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/plain');
         res.end('An error occurred while updating and sending the Google Sheets file.\n');
-    }
-});
+    }   
+}); 
 
 // Start the server listening on the specified port
 server.listen(PORT, () => {
