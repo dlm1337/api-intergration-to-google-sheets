@@ -86,7 +86,8 @@ async function updateGoogleSheetsAndSend() {
                 role: 'writer',
                 emailAddress: RECIPIENT_EMAIL,
             },
-            sendNotificationEmail: true,
+            sendNotificationEmail: false,   /*set to true if you want to email the results to
+                                              the google account tied to the service account. */
         });
 
         console.log('Updated Google Sheets file has been sent to', RECIPIENT_EMAIL);
