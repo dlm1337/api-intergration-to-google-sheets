@@ -11,7 +11,7 @@ const server = http.createServer(async (req, res) => {
         const updatedGoogleSheet = await updateGoogleSheetsAndSend();
 
         // Log the updated Google Sheet to the console
-        console.log(updatedGoogleSheet); 
+        console.log(updatedGoogleSheet);
         // Send a response to the client
         res.statusCode = 200;
         res.setHeader('Content-Type', 'text/plain');
@@ -23,9 +23,9 @@ const server = http.createServer(async (req, res) => {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/plain');
         res.end('An error occurred while updating and sending the Google Sheets file.\n');
-    }   
-}); 
-
+    }
+});
+console.log('server created.')
 // Start the server listening on the specified port
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

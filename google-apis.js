@@ -30,10 +30,11 @@ const SPREADSHEET_ID = '1hEmBuGQPtKuWjRn9nvTgyQum0q_2Xh15oMld22ojzyE';
 const RECIPIENT_EMAIL = 'dlm1337.dm@gmail.com';
 
 // Define the range of cells to be updated in the Google Sheets file
-const RANGE = 'Sheet1!A1:C3';
+const RANGE = 'Sheet1!A:C';
 
 // Export the function that updates the Google Sheets file and sends it to the recipient
 async function updateGoogleSheetsAndSend() {
+    console.log('updateGoogleSheetsAndSend function called');
     try {
         // Retrieve the object from the external API
         // const response = await axios.get('<EXTERNAL_API_URL>');
@@ -41,7 +42,7 @@ async function updateGoogleSheetsAndSend() {
         const jsonData = {
             data: [
                 {
-                    name: 'Alice',
+                    name: 'Bill',
                     age: 30,
                     gender: 'female',
                 },
@@ -59,20 +60,36 @@ async function updateGoogleSheetsAndSend() {
         };
 
         const data = jsonData.data;
+
+        // Get the current data in the sheet
+        const currentData = await sheets.spreadsheets.values.get({
+            spreadsheetId: SPREADSHEET_ID,
+            range: RANGE,
+        });
+
+        // Compute the next available row
+        const nextRow = currentData.data.values ? currentData.data.values.length + 1 : 1;
+
         // Update the Google Sheets file with the retrieved object
         const request = {
             valueInputOption: 'RAW',
             data: [
                 {
-                    range: RANGE,
-                    values: [
-                        [data[0].name, data[0].age, data[0].gender],
-                        [data[1].name, data[1].age, data[1].gender],
-                        [data[2].name, data[2].age, data[2].gender],
-                    ],
+                    range: `Sheet1!A${nextRow}:C${nextRow}`,
+                    values: [[data[0].name, data[0].age, data[0].gender]],
+                },
+                {
+                    range: `Sheet1!A${nextRow + 1}:C${nextRow + 1}`,
+                    values: [[data[1].name, data[1].age, data[1].gender]],
+                },
+                {
+                    range: `Sheet1!A${nextRow + 2}:C${nextRow + 2}`,
+                    values: [[data[2].name, data[2].age, data[2].gender]],
                 },
             ],
         };
+
+        console.log(request);
         await sheets.spreadsheets.values.batchUpdate({
             spreadsheetId: SPREADSHEET_ID,
             resource: request,
@@ -90,7 +107,7 @@ async function updateGoogleSheetsAndSend() {
                                               the google account tied to the service account. */
         });
 
-        console.log('Updated Google Sheets file has been sent to', RECIPIENT_EMAIL);
+        // console.log('Updated Google Sheets file has been sent to', RECIPIENT_EMAIL);
     } catch (err) {
         console.error(err);
     }
